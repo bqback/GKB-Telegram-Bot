@@ -433,7 +433,6 @@ def main():
 		else:
 			os.remove('bot_compare.py')
 			update.message.reply_text("Test2!")
-		time.sleep(86400)
 
 	def restart(bot, update):
 		update.message.reply_text("Перезапуск...")
