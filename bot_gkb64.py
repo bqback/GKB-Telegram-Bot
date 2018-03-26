@@ -437,7 +437,7 @@ def main():
 
 	def check_for_updates(bot, update):
 		wget.download(github_link, 'bot_compare.py')
-		if not filecmp('bot_gkb64.py', 'bot_compare.py'):
+		if filecmp('bot_gkb64.py', 'bot_compare.py'):
 			update.message.reply_text("Same!")
 		else:
 			update.message.reply_text("Different!")
