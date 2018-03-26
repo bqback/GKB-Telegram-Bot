@@ -428,10 +428,8 @@ def main():
 	def check_for_updates(bot, update):
 		wget.download(github_link, 'bot_compare.py')
 		if filecmp.cmp('bot_gkb64.py', 'bot_compare.py'):
-#			os.remove('bot_compare.py')
 			update.message.reply_text("Test!")
 		else:
-#			os.remove('bot_compare.py')
 			update.message.reply_text("Test2!")
 
 	def restart(bot, update):
