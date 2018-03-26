@@ -12,6 +12,8 @@ import re
 import os
 import sys
 import wget
+import filecmp
+import time
 from threading import Thread
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
@@ -423,12 +425,15 @@ def main():
 		updater.stop()
 		os.execl(sys.executable, sys.executable, *sys.argv)
 
-	def check_for_updates():
+	def check_for_updates(bot, update):
 		wget.download(github_link, 'bot_compare.py')
 		if filecmp.cmp('bot_gkb64.py', 'bot_compare.py'):
 			os.remove('bot_compare.py')
 			update.message.reply_text("Test!")
-		sleep(86400)
+		else:
+			os.remove('bot_compare.py')
+			update.message.reply_text("Test2!")
+		time.sleep(86400)
 
 	def restart(bot, update):
 		update.message.reply_text("Перезапуск...")
