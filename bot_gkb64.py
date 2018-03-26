@@ -32,7 +32,7 @@ email_login = os.environ['MAIL_LOGIN']
 email_pwd = os.environ['MAIL_PASSWORD']
 
 # Ссылка на скрипт на GitHub для проверки на апдейты
-github_link = 'https://raw.githubusercontent.com/bqback/GKB-Telegram-Bot/master/bot_gkb64.py'
+github_link = 'https://bqback.github.io/GKB-Telegram-Bot/bot_gkb64.py'
 
 # Блок клавиатур для простого прикрепления к сообщениям бота
 # Формат [[ряд1_кнопка1, ряд1_кнопка2, ...], [ряд2_кнопка1, ряд2_кнопка2, ...], ...]
