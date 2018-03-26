@@ -424,17 +424,18 @@ def main():
 		os.execl(sys.executable, sys.executable, *sys.argv)
 
 	def check_for_updates():
-		sleep(86400)
 		wget.download(github_link, 'bot_compare.py')
 		if filecmp.cmp('bot_gkb64.py', 'bot_compare.py'):
 			os.remove('bot_compare.py')
 			update.message.reply_text("Test!")
+		sleep(86400)
 
 	def restart(bot, update):
 		update.message.reply_text("Перезапуск...")
 		Thread(target=stop_and_restart).start()
 
 	dp.add_handler(CommandHandler('r', restart, filters=Filters.user(username=["@jazzforyoursoul", "@OlgaAshug"])))
+	dp.add_handler(CommandHandler('update', check_for_updates, filters=Filters.user(username=["@jazzforyoursoul", "@OlgaAshug"])))
 
 	dp.add_error_handler(error)
 
