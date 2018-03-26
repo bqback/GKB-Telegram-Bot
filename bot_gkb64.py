@@ -11,6 +11,7 @@ import smtplib
 import re
 import os
 import sys
+import wget
 from threading import Thread
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
@@ -26,6 +27,9 @@ faq_url = 'http://telegra.ph/CHasto-zadavaemye-voprosy-03-19'
 api_key = os.environ['BOT_API_KEY']
 email_login = os.environ['MAIL_LOGIN']
 email_pwd = os.environ['MAIL_PASSWORD']
+
+# Ссылка на скрипт на GitHub для проверки на апдейты
+github_link = 'https://raw.githubusercontent.com/bqback/GKB-Telegram-Bot/master/bot_gkb64.py'
 
 # Блок клавиатур для простого прикрепления к сообщениям бота
 # Формат [[ряд1_кнопка1, ряд1_кнопка2, ...], [ряд2_кнопка1, ряд2_кнопка2, ...], ...]
@@ -418,6 +422,13 @@ def main():
 	def stop_and_restart():
 		updater.stop()
 		os.execl(sys.executable, sys.executable, *sys.argv)
+
+	def check_for_updates():
+		sleep(86400)
+		wget.download(github_link, 'bot_compare.py')
+		if filecmp.cmp('bot_gkb64.py', 'bot_compare.py'):
+			os.remove('bot_compare.py')
+			update.message.reply_text("Test!")
 
 	def restart(bot, update):
 		update.message.reply_text("Перезапуск...")
