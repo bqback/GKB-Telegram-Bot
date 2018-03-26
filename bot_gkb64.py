@@ -4,15 +4,16 @@
 # Документация (англ): http://python-telegram-bot.readthedocs.io/en/stable/telegram.html
 # Примеры: https://github.com/python-telegram-bot/python-telegram-bot/tree/master/examples
 
+from __future__ import with_statement
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler)
+import itertools, functools, operator
 import logging
 import smtplib
 import re
 import os
 import sys
 import wget
-import filecmp
 import time
 from threading import Thread
 from email.MIMEMultipart import MIMEMultipart
@@ -73,6 +74,17 @@ email_regex = re.compile("([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'
 phone_regex = re.compile("(\(|)\d{3}(\)|)(\s|\-|)\d{3}(\s|\-|)\d{2}(\s|\-|)\d{2}")
 
 CHOICE, SUBJECT, NAME, CONTACT_INFO, PHONE_NUM, EMAIL, MSG_TEXT, FAQ = range(8)
+
+# Сравнение файлов для обновлений, украдено с https://stackoverflow.com/a/255210/7971750
+def filecmp(filename1, filename2):
+    with open(filename1, "rb") as fp1, open(filename2, "rb") as fp2:
+        if os.fstat(fp1.fileno()).st_size != os.fstat(fp2.fileno()).st_size:
+            return False
+        fp1_reader= functools.partial(fp1.read, 4096)
+        fp2_reader= functools.partial(fp2.read, 4096)
+        cmp_pairs= itertools.izip(iter(fp1_reader, ''), iter(fp2_reader, ''))
+        inequalities= itertools.starmap(operator.ne, cmp_pairs)
+        return not any(inequalities)
 
 # Дефолтное меню
 def start(bot, update):
@@ -427,10 +439,10 @@ def main():
 
 	def check_for_updates(bot, update):
 		wget.download(github_link, 'bot_compare.py')
-		if filecmp.cmp('bot_gkb64.py', 'bot_compare.py'):
-			update.message.reply_text("Test!")
+		if not filecmp('bot_gkb64.py', 'bot_compare.py'):
+			update.message.reply_text("Same!")
 		else:
-			update.message.reply_text("Test2!")
+			update.message.reply_text("Different!")
 
 	def restart(bot, update):
 		update.message.reply_text("Перезапуск...")
