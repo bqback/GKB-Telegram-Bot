@@ -439,10 +439,10 @@ def main():
 		wget.download(github_link, 'bot_compare.py')
 		if filecmp('bot_gkb64.py', 'bot_compare.py'):
 			os.remove('bot_compare.py')
-			update.message.reply_text("Same!")
+			logger.info("No update required.")
 		else:
 			os.remove('bot_compare.py')
-			update.message.reply_text("Different!")
+			logger.info("New version found!")
 
 	def restart(bot, update):
 		update.message.reply_text("Перезапуск...")
