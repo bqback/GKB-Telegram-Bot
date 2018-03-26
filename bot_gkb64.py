@@ -78,8 +78,6 @@ CHOICE, SUBJECT, NAME, CONTACT_INFO, PHONE_NUM, EMAIL, MSG_TEXT, FAQ = range(8)
 # Сравнение файлов для обновлений, украдено с https://stackoverflow.com/a/255210/7971750
 def filecmp(filename1, filename2):
     with open(filename1, "rb") as fp1, open(filename2, "rb") as fp2:
-        if os.fstat(fp1.fileno()).st_size != os.fstat(fp2.fileno()).st_size:
-            return False
         fp1_reader= functools.partial(fp1.read, 4096)
         fp2_reader= functools.partial(fp2.read, 4096)
         cmp_pairs= itertools.izip(iter(fp1_reader, ''), iter(fp2_reader, ''))
